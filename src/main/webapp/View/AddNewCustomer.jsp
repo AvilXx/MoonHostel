@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,89 +13,29 @@
         <link rel="icon" type="image/png" href="../assets/img/logo.png" sizes="16x16">
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
 
-        <link href="../css/styles.css" rel="stylesheet" />
+        <link href="${pageContext.request.contextPath}/css/styles.css" rel="stylesheet" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
     </head>
 
     <body class="sb-nav-fixed jumbotron">
-        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.jsp">MoonHostel
-                <img src="../assets/img/logo.png" class="rounded-circle"  alt="logo"width="40" height="36">
-            </a>
-            <!-- Sidebar Toggle-->
-            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-            <!-- Navbar Search-->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
-                </div>
-            </form>
-            <!-- Navbar-->
-            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">                        
-                        <li><a class="dropdown-item" href="#!">Cài đặt</a></li>
-
-                        <li>
-                            <hr class="dropdown-divider" />
-                        </li>
-                        <li><a class="dropdown-item" href="#!">Đăng Xuất</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-        <div id="layoutSidenav">
-             <div id="layoutSidenav_nav">
-                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <div class="nav">
-
-                            <a class="nav-link" href="index.jsp">
-                                <div class="sb-nav-link-icon"><i class="fas fa-palette"></i></div>
-                                Trang Chủ
-                            </a>
-                            <a class="nav-link collapsed" href="room.jsp">
-                                <div class="sb-nav-link-icon"><i class="fas fa-house"></i></div>
-                                Phòng                                
-                            </a>
-                            <a class="nav-link collapsed" href="service.jsp">
-                                <div class="sb-nav-link-icon"><i class="fas fa-cubes"></i></div>
-                                Dịch Vụ                                
-                            </a>
-                                               
-                            <div class="sb-sidenav-menu-heading">Khác</div>
-                           
-                            <a class="nav-link" href="#">
-                                <div class="sb-nav-link-icon"><i class="fas fa-address-card"></i></div>
-                                Liên Hệ
-                            </a>
-                        </div>
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        MoonHostel
-                        <img src="../assets/img/logo.png" class="rounded-circle"  alt="regisster"width="40" height="36">
-                    </div>
-                </nav>
-            </div>
+        
+        <%@include file="/View/layout/header.jsp" %>
+        
             <div id="layoutSidenav_content">
 
-                <form action="">
+                <form action="${pageContext.request.contextPath}/MainController" method="POST">
                     <div class="card mb-4">
                         <div class="card-header">
                             <div class="card-header">
                                 <h2><i class="fa fa-plus"></i> Thêm Khách</h2>                              
                             </div>
                             <div class="mt-3 text-center" style="float:right; display: flex">
-                                <a href="room.jsp">
+                                <a href="${pageContext.request.contextPath}/MainController?action=RoomPage">
                                     <button class="btn btn-warning" type="button" id="cancelButton"><i class="fa fa-mail-reply"></i> Trở Lại</button>
                                 </a>
-                                <button class="btn btn-success" type="button" id="sumbitButton"><i class="fa fa-check"></i> Lưu</button>
+                                <button class="btn btn-success" type="submit" name="action" id="sumbitButton" value="AddCustomer"><i class="fa fa-check"></i> Lưu</button>
                             </div>                      
                         </div>
                     </div>
@@ -125,50 +66,50 @@
                                         <div class="form-group row mt-2">
                                             <label  class="col-sm-2 col-form-label">Tên</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" placeholder="Enter your name">
+                                                <input type="text" class="form-control" placeholder="Enter your name" name="customername">
                                             </div>
                                         </div>
                                         <div class="form-group row mt-2">
                                             <label  class="col-sm-2 col-form-label">Giới Tính</label>
                                             <div class="col-sm-10">
-                                                <input type="radio" name="radio" id="sex"  />Nam
-                                                <input type="radio" name="radio" checked /> Nữ
+                                                <input type="radio" name="gender" id="sex"  />Nam
+                                                <input type="radio" name="gender" checked /> Nữ
                                             </div>
                                         </div>
                                         <div class="form-group row mt-2">
                                             <label  class="col-sm-2 col-form-label">Ngày Sinh</label>
                                             <div class="col-sm-10">
-                                                <input type="date" class="form-control" placeholder="Enter your DOB">
+                                                <input type="date" class="form-control" placeholder="Enter your DOB" name="dob">
                                             </div>
                                         </div>
                                         <div class="form-group row mt-2">
                                             <label  class="col-sm-2 col-form-label">CMND/CCCD</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" placeholder="Enter your CMND/CCCD">
+                                                <input type="text" class="form-control" placeholder="Enter your CMND/CCCD" name="customerID">
                                             </div>
                                         </div>
                                         <div class="form-group row mt-2">
                                             <label  class="col-sm-2 col-form-label">Số Điện Thoại</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" placeholder="Enter your phone">
+                                                <input type="text" class="form-control" placeholder="Enter your phone" name="phone">
                                             </div>
                                         </div>
                                         <div class="form-group row mt-2">
                                             <label  class="col-sm-2 col-form-label">Địa Chỉ</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" placeholder="Enter your address">
+                                                <input type="text" class="form-control" placeholder="Enter your address" name="address">
                                             </div>
                                         </div>
                                         <div class="form-group row mt-2">
                                             <label  class="col-sm-2 col-form-label">Phòng</label>
                                             <div class="col-sm-10">
-                                                <input type="text" value="Room 3" class="form-control" placeholder="Enter your Room" disabled="disabled">
+                                                <input type="text" value="${Room.roomID}" class="form-control" placeholder="Enter your Room" name="RoomID" disabled="disabled">
                                             </div>
                                         </div>
                                         <div class="form-group row mt-2">
                                             <label  class="col-sm-2 col-form-label">Ngày Thuê</label>
                                             <div class="col-sm-10">
-                                                <input type="date" class="form-control" >
+                                                <input type="date" class="form-control" name="signed_date">
                                             </div>
                                         </div>
                                     </div>
@@ -180,7 +121,7 @@
                                                 <tr>
                                                     <th style="width: 5%">Choose</th>
                                                     <th style="width: 55%; text-align: center">Dịch Vụ</th>
-                                                    <th style="width: 20%; text-align: center ">Giá (VNĐ)</th>
+                                                    <th style="width: 20%; text-align: center">Giá (VNĐ)</th>
                                                     <th style="width: 20%; text-align: center">Số Lượng</th>
                                                 </tr>
                                             </thead>

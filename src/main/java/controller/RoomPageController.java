@@ -46,11 +46,13 @@ public class RoomPageController extends HttpServlet {
             List<RoomDTO> RoomList = dao.GetListRoom(HostelList);
             List<ContractDTO> ContractList = Cdao.GetListContract(RoomList);
             List<CustomerDTO> CusList = Cusdao.GetListCustomer(ContractList);
+            CustomerDTO NullCus = new CustomerDTO("","","","",null,"","","");
 
             request.setAttribute("HostelList",HostelList);
             request.setAttribute("RoomList",RoomList);
             request.setAttribute("ContractList",ContractList);
             request.setAttribute("CusList",CusList);
+            request.setAttribute("NullCus",NullCus);
 
         } catch (Exception e) {
             log("Error at RoomPageController:"+e.toString());

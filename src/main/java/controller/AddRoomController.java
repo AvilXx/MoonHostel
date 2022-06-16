@@ -1,13 +1,12 @@
-package controller;
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+package controller;
 
 import dao.RoomDAO;
 import dto.HostelDTO;
-import dto.UserDTO;
+import dto.RoomDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -15,17 +14,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author avillX
  */
-@WebServlet(name = "AddHostelController",urlPatterns = {"/AddHostelController"})
-public class AddHostelController extends HttpServlet {
+@WebServlet(name = "AddRoomController", urlPatterns = {"/AddRoomController"})
+public class AddRoomController extends HttpServlet {
 
-    private static final String ERROR = "View/addNewHostel.jsp";
-    private static final String SUCCESS = "UserPageController"; 
+    private static final String ERROR = "View/addNewRoom.jsp";
+    private static final String SUCCESS = "MainController?action=RoomPage";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -47,7 +45,10 @@ public class AddHostelController extends HttpServlet {
             throws ServletException, IOException {
         String url = ERROR;
         try {
-
+            String HostelID = request.getParameter("HostelID");
+            RoomDAO dao = new RoomDAO();
+            HostelDTO Hostel = dao.GetAHostel(HostelID);
+            request.setAttribute("Hostel", Hostel);
         } catch (Exception e) {
             log("Error at AddHostelController(doGet): " + e.toString());
         } finally {
@@ -67,25 +68,19 @@ public class AddHostelController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = SUCCESS;
-        try {
-            HttpSession ss = request.getSession();
-            UserDTO us =  (UserDTO) ss.getAttribute("LOGIN_USER");
- 
-            String hostelname = request.getParameter("hostelname");
-            String city = request.getParameter("city");
-            String district = request.getParameter("district");
-            String ward = request.getParameter("ward");
-            String address = request.getParameter("address");
-            String Address = address + ", " + ward + ", " + district + ", " + city;
+        RoomDAO dao = new RoomDAO();
+        try {            
+            Double price = Double.parseDouble(request.getParameter("price"));
+            String hostelID = request.getParameter("hostelID");
+            String roomnumber = request.getParameter("roomnumber");          
+            String description = request.getParameter("description");
 
-            RoomDAO dao = new RoomDAO();
-            int hostelID = dao.CountHostel();
-            boolean check = dao.AddHostel(new HostelDTO(String.valueOf(hostelID), hostelname, Address, us.getPhone(), us.getUserID()));
+            boolean check = dao.AddRoom(new RoomDTO("",hostelID,roomnumber,price,description,"EMPTY"));
             if (check) {
                 url = SUCCESS;
-            }
+            }           
         } catch (Exception e) {
-            log("Error at AddHostelController(doPost): " + e.toString());
+            log("Error at AddRoomController(doPost): " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
