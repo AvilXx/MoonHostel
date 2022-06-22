@@ -12,18 +12,24 @@ import java.sql.Date;
  */
 public class ServiceDetailDTO {
     private String detailID;
-    private String CalUnit;
+    private String detailname;
+    private String calUnit;
     private double unit_price;
     private Date updated_date;
     private String description;
+    private String status;
+    private String hostelID;
     private String serviceID;
 
-    public ServiceDetailDTO(String detailID, String CalUnit, double unit_price, Date updated_date, String description, String serviceID) {
+    public ServiceDetailDTO(String detailID, String detailname, String calUnit, double unit_price, Date updated_date, String description, String status, String hostelID, String serviceID) {
         this.detailID = detailID;
-        this.CalUnit = CalUnit;
+        this.detailname = detailname;
+        this.calUnit = calUnit;
         this.unit_price = unit_price;
         this.updated_date = updated_date;
         this.description = description;
+        this.status = status;
+        this.hostelID = hostelID;
         this.serviceID = serviceID;
     }
 
@@ -35,12 +41,20 @@ public class ServiceDetailDTO {
         this.detailID = detailID;
     }
 
-    public String getCalUnit() {
-        return CalUnit;
+    public String getDetailname() {
+        return detailname;
     }
 
-    public void setCalUnit(String CalUnit) {
-        this.CalUnit = CalUnit;
+    public void setDetailname(String detailname) {
+        this.detailname = detailname;
+    }
+
+    public String getCalUnit() {
+        return calUnit;
+    }
+
+    public void setCalUnit(String calUnit) {
+        this.calUnit = calUnit;
     }
 
     public double getUnit_price() {
@@ -67,6 +81,22 @@ public class ServiceDetailDTO {
         this.description = description;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getHostelID() {
+        return hostelID;
+    }
+
+    public void setHostelID(String hostelID) {
+        this.hostelID = hostelID;
+    }
+
     public String getServiceID() {
         return serviceID;
     }
@@ -74,6 +104,14 @@ public class ServiceDetailDTO {
     public void setServiceID(String serviceID) {
         this.serviceID = serviceID;
     }
+
+   
+
+    
+
+
+
+    
 
 
 }

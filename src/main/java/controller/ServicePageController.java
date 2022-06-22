@@ -4,13 +4,21 @@
  */
 package controller;
 
+import dao.RoomDAO;
+import dao.ServiceDAO;
+import dto.HostelDTO;
+import dto.ServiceTypeDTO;
+import dto.ServiceDetailDTO;
+import dto.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -19,15 +27,9 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ServicePageController", urlPatterns = {"/ServicePageController"})
 public class ServicePageController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private static final String ERROR = "View/service.jsp";
+    private static final String SUCCESS = "ServicePageController";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -49,7 +51,28 @@ public class ServicePageController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+       response.setContentType("text/html;charset=UTF-8");
+        String url = ERROR;
+        try {
+            HttpSession ss = request.getSession();
+            UserDTO us =  (UserDTO) ss.getAttribute("LOGIN_USER");
+            RoomDAO dao = new RoomDAO();
+            ServiceDAO SerDAO = new ServiceDAO();
+
+            List<HostelDTO> HostelList = dao.GetListHostel(us.getUserID());
+            List<ServiceTypeDTO> ServiceList = SerDAO.GetListService();
+            List<ServiceDetailDTO> ServiceDetailList = SerDAO.GetListServiceDetail(HostelList);
+
+            request.setAttribute("HostelList",HostelList);
+            request.setAttribute("ServiceTypeList",ServiceList);
+            request.setAttribute("ServiceDetailList",ServiceDetailList);
+
+
+        } catch (Exception e) {
+            log("Error at ServicePageController:"+e.toString());
+        } finally {
+            request.getRequestDispatcher(url).forward(request, response);
+        }
     }
 
     /**

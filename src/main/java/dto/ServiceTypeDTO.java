@@ -10,15 +10,13 @@ import java.sql.Date;
  *
  * @author avillX
  */
-public class ServiceDTO {
+public class ServiceTypeDTO {
     private String serviceID;
     private String service_name; 
-    private String hostelID;   
 
-    public ServiceDTO(String serviceID, String service_name, String hostelID) {
+    public ServiceTypeDTO(String serviceID, String service_name) {
         this.serviceID = serviceID;
         this.service_name = service_name;
-        this.hostelID = hostelID;
     }
 
     public String getServiceID() {
@@ -36,14 +34,9 @@ public class ServiceDTO {
     public void setService_name(String service_name) {
         this.service_name = service_name;
     }
+  
 
-    public String getHostelID() {
-        return hostelID;
-    }
-
-    public void setHostelID(String hostelID) {
-        this.hostelID = hostelID;
-    }
+  
 
   
 

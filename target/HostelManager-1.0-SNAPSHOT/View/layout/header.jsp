@@ -63,7 +63,7 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-house"></i></div>
                                 Phòng                                
                             </a>
-                            <a class="nav-link collapsed" href="service.jsp">
+                            <a class="nav-link collapsed" href="${pageContext.request.contextPath}/MainController?action=ServicePage">
                                 <div class="sb-nav-link-icon"><i class="fas fa-cubes"></i></div>
                                 Dịch Vụ                                
                             </a>

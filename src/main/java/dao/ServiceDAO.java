@@ -4,10 +4,8 @@
  */
 package dao;
 
-import dto.ContractDTO;
 import dto.HostelDTO;
-import dto.RoomDTO;
-import dto.ServiceDTO;
+import dto.ServiceTypeDTO;
 import dto.ServiceDetailDTO;
 import java.sql.Connection;
 import java.sql.Date;
@@ -24,16 +22,48 @@ import utils.DBUtils;
  */
 public class ServiceDAO {
 
-    private final static String GET_A_SERVICE = "SELECT * FROM dbo.[Service] WHERE service_id = ?";
-    private final static String GET_SERVICE = "SELECT * FROM dbo.[Service] WHERE hostel_id = ?";
-    private static final String ADD_SERVICE = "INSERT INTO dbo.[Service](service_name, hostel_id) VALUES(?,?)";
+    private final static String GET_A_SERVICETYPE = "SELECT * FROM dbo.[ServiceType] WHERE service_id = ?";
+    private final static String GET_SERVICETYPE = "SELECT * FROM dbo.[ServiceType]";
+    private static final String ADD_SERVICE = "INSERT INTO dbo.[ServiceType](service_name) VALUES(?)";
 
-    private final static String GET_A_LATEST_SERVICEDETAIL = "SELECT TOP 1 * FROM dbo.[ServiceDetail] WHERE service_id = ? ORDER BY history_id DESC";
-    private final static String GET_SERVICEDETAIL = "SELECT * FROM dbo.[ServiceDetail] WHERE service_id = ?";
-    private static final String ADD_SERVICEDETAIL = "INSERT INTO dbo.[ServiceDetail](calculation_unit, unit_price, updated_date, description, service_id) VALUES(?,?,?,?,?)";
+    private final static String GET_A_LATEST_SERVICEDETAIL = "SELECT TOP 1 * FROM dbo.[ServiceDetail] WHERE service_id = ? AND hostel_id = ? AND status = 'ACTIVE' ORDER BY detail_id DESC";
+    private final static String GET_SERVICEDETAIL = "SELECT * FROM dbo.[ServiceDetail] WHERE hostel_id = ?";
+    private static final String ADD_SERVICEDETAIL = "INSERT INTO dbo.[ServiceDetail](detail_name, calculation_unit, unit_price, updated_date, description, status, hostel_id, service_id) VALUES(?,?,?,?,?,?,?,?)";
 
-    public List<ServiceDTO> GetListService(List<HostelDTO> HostelList) throws SQLException {
-        List<ServiceDTO> list = new ArrayList<>();
+    public List<ServiceTypeDTO> GetListService() throws SQLException {
+        List<ServiceTypeDTO> list = new ArrayList<>();
+            Connection conn = null;
+            PreparedStatement ptm = null;
+            ResultSet rs = null;
+            try {
+                conn = DBUtils.getConnection();
+                if (conn != null) {
+                    ptm = conn.prepareStatement(GET_SERVICETYPE);
+                    rs = ptm.executeQuery();
+                    while (rs.next()) {
+                        String service_id = rs.getString("service_id");
+                        String service_name = rs.getString("service_name");
+                        list.add(new ServiceTypeDTO(service_id,service_name));
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ptm != null) {
+                    ptm.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            }    
+        return list;
+    }
+
+    public List<ServiceDetailDTO> GetListServiceDetail(List<HostelDTO> HostelList) throws SQLException {
+        List<ServiceDetailDTO> list = new ArrayList<>();
         for( HostelDTO i: HostelList){
             Connection conn = null;
             PreparedStatement ptm = null;
@@ -41,50 +71,19 @@ public class ServiceDAO {
             try {
                 conn = DBUtils.getConnection();
                 if (conn != null) {
-                    ptm = conn.prepareStatement(GET_SERVICE);
+                    ptm = conn.prepareStatement(GET_SERVICEDETAIL);
                     ptm.setString(1, i.getHostelID());
                     rs = ptm.executeQuery();
                     while (rs.next()) {
-                        String service_id = rs.getString("service_id");
-                        String service_name = rs.getString("service_name");
-                        list.add(new ServiceDTO(service_id,service_name,i.getHostelID()));
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (ptm != null) {
-                    ptm.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            }
-        }
-        return list;
-    }
-    public List<ServiceDetailDTO> GetListServiceDetail(List<ServiceDTO> DetailList) throws SQLException {
-        List<ServiceDetailDTO> list = new ArrayList<>();
-        for( ServiceDTO i: DetailList){
-            Connection conn = null;
-            PreparedStatement ptm = null;
-            ResultSet rs = null;
-            try {
-                conn = DBUtils.getConnection();
-                if (conn != null) {
-                    ptm = conn.prepareStatement(GET_SERVICEDETAIL);
-                    ptm.setString(1, i.getServiceID());
-                    rs = ptm.executeQuery();
-                    while (rs.next()) {
-                        String history_id = rs.getString("history_id");
+                        String detailname = rs.getString("detail_name");
+                        String detail_id = rs.getString("detail_id");
                         String Calculation_Unit = rs.getString("calculation_unit");
                         Double unit_price = rs.getDouble("unit_price");
-                        Date updated_date = rs.getDate("due_date");
+                        Date updated_date = rs.getDate("updated_date");
                         String description = rs.getString("description");
-                        list.add(new ServiceDetailDTO(history_id,Calculation_Unit,unit_price,updated_date,description,i.getServiceID()));
+                        String status = rs.getString("status");
+                        String service_id = rs.getString("service_id");
+                        list.add(new ServiceDetailDTO(detail_id,detailname,Calculation_Unit,unit_price,updated_date,description,status, i.getHostelID(),service_id));
                     }
                 }
             } catch (Exception e) {
@@ -103,20 +102,19 @@ public class ServiceDAO {
         }
         return list;
     }
-    public ServiceDTO GetAService(String ServiceID) throws SQLException {
+    public ServiceTypeDTO GetAService(String ServiceID) throws SQLException {
         Connection conn = null;
         PreparedStatement ptm = null;
         ResultSet rs = null;
         try {
             conn = DBUtils.getConnection();
             if (conn != null) {
-                ptm = conn.prepareStatement(GET_A_SERVICE);
+                ptm = conn.prepareStatement(GET_A_SERVICETYPE);
                 ptm.setString(1, ServiceID);
                 rs = ptm.executeQuery();
                 while (rs.next()) {
-                    String hostel_id = rs.getString("hostel_id");
                     String service_name = rs.getString("service_name");
-                    return new ServiceDTO(ServiceID,hostel_id,service_name);
+                    return new ServiceTypeDTO(ServiceID,service_name);
                 }
             }
         } catch (Exception e) {
@@ -135,23 +133,26 @@ public class ServiceDAO {
         return null; 
     }
 
-    public ServiceDetailDTO GetLatestServiceDetail(String ServiceID) throws SQLException {
+    public ServiceDetailDTO GetLatestServiceDetail(String ServiceID, String HostelID) throws SQLException {
         Connection conn = null;
         PreparedStatement ptm = null;
         ResultSet rs = null;
         try {
             conn = DBUtils.getConnection();
             if (conn != null) {
-                ptm = conn.prepareStatement(GET_A_SERVICE);
+                ptm = conn.prepareStatement(GET_A_LATEST_SERVICEDETAIL);
                 ptm.setString(1, ServiceID);
+                ptm.setString(2, HostelID);
                 rs = ptm.executeQuery();
                 while (rs.next()) {
-                        String history_id = rs.getString("history_id");
+                        String detail_id = rs.getString("detail_id");
+                        String detailname = rs.getString("detail_name");
                         String Calculation_Unit = rs.getString("calculation_unit");
                         Double unit_price = rs.getDouble("unit_price");
-                        Date updated_date = rs.getDate("due_date");
+                        Date updated_date = rs.getDate("updated_date");
+                        String status = rs.getString("status");
                         String description = rs.getString("description");
-                    return new ServiceDetailDTO(history_id,Calculation_Unit,unit_price,updated_date,description,ServiceID);
+                    return new ServiceDetailDTO(detail_id,detailname,Calculation_Unit,unit_price,updated_date,description,status, HostelID,ServiceID);
                 }
             }
         } catch (Exception e) {
@@ -169,7 +170,7 @@ public class ServiceDAO {
         }
         return null; 
     }
-    public boolean AddService(ServiceDTO Service) throws SQLException {
+    public boolean AddService(ServiceTypeDTO Service) throws SQLException {
         boolean check = false;
         Connection conn = null;
         PreparedStatement ptm = null;
@@ -178,7 +179,6 @@ public class ServiceDAO {
             if (conn != null) {
                 ptm = conn.prepareStatement(ADD_SERVICE);
                 ptm.setString(1, Service.getService_name());
-                ptm.setString(2, Service.getHostelID());
                 check = ptm.executeUpdate() > 0 ? true : false;
             }
         } catch (Exception e) {
@@ -201,11 +201,13 @@ public class ServiceDAO {
             conn = DBUtils.getConnection();
             if (conn != null) {
                 ptm = conn.prepareStatement(ADD_SERVICEDETAIL);
-                ptm.setString(1, s.getCalUnit());
-                ptm.setDouble(2, s.getUnit_price());
-                ptm.setDate(3, s.getUpdated_date());
-                ptm.setString(4, s.getDescription());
-                ptm.setString(5, s.getServiceID());
+                ptm.setString(1, s.getDetailname());
+                ptm.setString(2, s.getCalUnit());
+                ptm.setDouble(3, s.getUnit_price());
+                ptm.setDate(4, s.getUpdated_date());
+                ptm.setString(5, s.getDescription());
+                ptm.setString(6, s.getHostelID());
+                ptm.setString(7, s.getServiceID());
                 check = ptm.executeUpdate() > 0 ? true : false;
             }
         } catch (Exception e) {
@@ -220,6 +222,18 @@ public class ServiceDAO {
         }
         return check;
     }
+public static void main(String[] args) throws SQLException {
+    List<ServiceDetailDTO> list = new ArrayList<>();
+    ServiceDAO dao = new ServiceDAO();
+    RoomDAO rdao = new RoomDAO();
+    List<HostelDTO> ho = rdao.GetListHostel("1");
+    List<ServiceDetailDTO> s = dao.GetListServiceDetail(ho);
+    for(ServiceDetailDTO ss : s){
+         System.out.println(ss.getDetailname());
+    }
+   
+
+}
 
 
 }

@@ -29,7 +29,7 @@ public class RoomDAO {
     private static final String GETAROOM = "SELECT * FROM dbo.[Room] where room_id = ? AND status Not IN ('DISABLED')";
 
     private static final String ADDROOM = "INSERT INTO dbo.[Room](hostel_id, room_number, price, description, status) VALUES(?,?,?,?,?)";
-    private static final String ADDHOSTEL = "INSERT INTO dbo.[Hostel](hostel_name, address, phone, user_id) VALUES(?,?,?,?)";
+    private static final String ADDHOSTEL = "INSERT INTO dbo.[Hostel](hostel_name, address, phone,status, user_id) VALUES(?,?,?,'ACTIVE',?)";
 
     private static final String UPDATEROOM = "UPDATE FROM dbo.[Room] SET hostel_id = ?, room_number = ?, price = ?, description = ?, status = ? where room_id = ?";
     private static final String UPDATEHOSTEL = "UPDATE FROM dbo.[Hostel] SET hostel_name = ?, address = ?, phone = ? where hostel_id =?"; 
