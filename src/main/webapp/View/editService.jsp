@@ -1,4 +1,4 @@
- n bd <%-- 
+<%-- 
     Document   : addnewrom
     Created on : May 31, 2022, 7:17:06 AM
     Author     : Dell
@@ -16,7 +16,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>MoonHostel</title>
-        <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/assets/img/logo.png" sizes="16x16">
+        <link rel="icon" type="image/png" href="../assets/img/logo.png" sizes="16x16">
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
@@ -32,7 +32,7 @@
                 <div class="container-fluid px-4">
                     <div class="card mt-4">
                         <div class="card-header">
-                            <h1 class="text-info">Thêm Dịch Vụ</h1>
+                            <h1 class="text-info"><i class="fa fa-edit"></i>Chỉnh sửa Dịch Vụ</h1>
                         </div>
                         <div class="card-body">
                             <form action="${pageContext.request.contextPath}/MainController" method="POST">
@@ -40,7 +40,7 @@
                                     <div class="form-group row col-md-6 mt-2">
                                         <label  class="col-sm-4 col-form-label">Tên dịch vụ:</label>
                                         <div class="col col-sm-8">
-                                            <input name="detail_name" type="text" class="form-control" placeholder="Tên dịch vụ" required pattern="\S+">
+                                            <input type="text" class="form-control" value="${ServiceDetail.detailname}" required pattern="\S+">
                                         </div>
                                     </div>
                                     <div class="form-group row col-md-6 mt-2">
@@ -48,7 +48,14 @@
                                         <div class="col-sm-8">
                                             <select id="#" name="service_id" style="padding:6px 0; border-radius: 3px; width: 50%" >
                                                 <c:forEach items="${ServiceTypeList}" var="ST">
-                                                    <option value="${ST.serviceID}">${ST.service_name}</option>                                                
+                                                    <c:choose>
+                                                        <c:when test="${ST.serviceID == ServiceDetail.serviceID}">
+                                                            <option value="${ST.serviceID}" checked="">${ST.service_name}</option>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <option value="${ST.serviceID}">${ST.service_name}</option>
+                                                        </c:otherwise>
+                                                    </c:choose>                                                
                                                 </c:forEach>
                                             </select> 
                                         </div>
@@ -57,9 +64,9 @@
 
                                 <div class="row">
                                     <div class="form-group row col-md-6 mt-2">
-                                        <label  class="col-sm-4 col-form-label">Ngày thêm:</label>
+                                        <label  class="col-sm-4 col-form-label">Ngày cập nhật:</label>
                                         <div class="col col-sm-8">
-                                            <input type="date" name="updated_date"class="form-control">
+                                            <input type="date" class="form-control" name="updated_date" value="${ServiceDetail.updated_date}">
                                         </div>
                                     </div>
                                     <div class="form-group row col-md-6 mt-2">
@@ -69,7 +76,7 @@
                                                 <c:forEach items="${HostelList}" var="H">
                                                     <option value="${H.hostelID}">${H.hostelname}</option>                                                
                                                 </c:forEach>
-                                            </select> 
+                                            </select>
 
                                         </div>
                                     </div>
@@ -79,7 +86,7 @@
                                     <div class="form-group row col-md-6 mt-2">
                                         <label  class="col-sm-4 col-form-label">Giá:</label>
                                         <div class="col col-sm-8">
-                                            <input class="money form-control" type="text" name="unit_price"  placeholder="Giá">
+                                            <input class="money form-control" type="text" name="unit_price"  placeholder="Giá" value="${ServiceDetail.unit_price}">
                                         </div>
                                     </div>
                                     <div class="form-group row col-md-6 mt-2">
@@ -89,16 +96,12 @@
                                         </label>
                                     </div>
                                 </div> 
-                                    <div class="form-group">
-                                        <label for="inputAddress2">Mô Tả:</label>
-                                        <textarea rows="3" class="form-control" id="remarks" name="description"></textarea>
-                                    </div>
 
                                 <div class="mt-3 text-center">
                                     <a href="${pageContext.request.contextPath}/MainController?action=ServicePage">
                                         <button class="btn btn-warning" type="button" id="cancelButton"><i class="fa fa-mail-reply"></i> Trở Về</button>
                                     </a>
-                                        <button class="btn btn-success" type="submit" name="action" id="sumbitButton" value="AddService"><i class="fa fa-check"></i> Lưu</button>
+                                    <button class="btn btn-success" type="submit" name="action" id="sumbitButton" value="UpdateService"><i class="fa fa-check"></i> Lưu</button>
                                 </div>
                             </form>
                         </div>
@@ -115,11 +118,11 @@
             </footer>
         </div>
     </div>
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/js/simple.money.format.js"></script>
-        <script type="text/javascript">
-            $('.money').simpleMoneyFormat();
-        </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/simple.money.format.js"></script>
+    <script type="text/javascript">
+        $('.money').simpleMoneyFormat();
+    </script>
     <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
     <script src="${pageContext.request.contextPath}/js/datatables-simple-demo.js"></script>
     <script src="${pageContext.request.contextPath}/assets/demo/chart-area-demo.js"></script>

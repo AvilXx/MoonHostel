@@ -7,11 +7,19 @@ package controller;
 import dao.ContractDAO;
 import dao.CustomerDAO;
 import dao.RoomDAO;
+import dao.ServiceDAO;
+import dto.ContractDTO;
+import dto.CustomerDTO;
 import dto.HostelDTO;
+import dto.RoomDTO;
+import dto.ServiceDetailDTO;
+import dto.ServiceTypeDTO;
 import dto.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,10 +31,11 @@ import javax.servlet.http.HttpSession;
  * @author avillX
  */
 @WebServlet(name = "AddCustomerController", urlPatterns = {"/AddCustomerController"})
+@MultipartConfig
 public class AddCustomerController extends HttpServlet {
 
-    private static final String ERROR = "View/editCus.jsp";
-    private static final String SUCCESS = "UserPageController";   
+    private static final String ERROR = "View/AddNewCustomer.jsp";
+    private static final String SUCCESS = "RoomPageController";   
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -53,15 +62,25 @@ public class AddCustomerController extends HttpServlet {
             RoomDAO dao = new RoomDAO();
             CustomerDAO Cusdao = new CustomerDAO();
             ContractDAO Cdao = new ContractDAO();
+            ServiceDAO SerDAO = new ServiceDAO();
 
-            String HostelID = request.getParameter("HostelID");
+            List<HostelDTO> HostelList = dao.GetListHostel(us.getUserID());
+            List<RoomDTO> RoomList = dao.GetListRoom(HostelList);
+            List<ContractDTO> ContractList = Cdao.GetListContract(RoomList);
+            List<CustomerDTO> CusList = Cusdao.GetListCustomer(ContractList);
+            List<ServiceTypeDTO> ServiceList = SerDAO.GetListService();
+            List<ServiceDetailDTO> ServiceDetailList = SerDAO.GetListServiceDetail(HostelList);
 
-            HostelDTO Hostel = dao.GetAHostel(HostelID);
+            RoomDTO room = dao.GetARoom(request.getParameter("RoomID"));
 
-            request.setAttribute("Hostel",Hostel);            
+            request.setAttribute("Room",room);
+            request.setAttribute("CusList",CusList);   
+            request.setAttribute("ServiceTypeList",ServiceList);
+            request.setAttribute("HostelList",HostelList);
+            request.setAttribute("ServiceDetailList",ServiceDetailList);         
 
         } catch (Exception e) {
-            log("Error at UpdateHostelController(doGet):"+e.toString());
+            log("Error at AddCustomerController(doGet):"+e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
@@ -79,7 +98,29 @@ public class AddCustomerController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        String url = ERROR;
+        try {
+            HttpSession ss = request.getSession();
+            UserDTO us =  (UserDTO) ss.getAttribute("LOGIN_USER");
+
+            String fullname = request.getParameter("fullname");
+            String gender = request.getParameter("gender");
+            String dob = request.getParameter("dob");
+            String customerID = request.getParameter("customerID");
+            String phone = request.getParameter("phone");
+            String address = request.getParameter("address");
+            String roomID = request.getParameter("roomID");
+            String signed_date = request.getParameter("signed_date");
+
+            String[] checked_DetailIDs = request.getParameterValues("choose");
+
+
+        } catch (Exception e) {
+            log("Error at AddCustomerController(doPost):"+e.toString());
+        } finally {
+            request.getRequestDispatcher(url).forward(request, response);
+        }
     }
 
     /**

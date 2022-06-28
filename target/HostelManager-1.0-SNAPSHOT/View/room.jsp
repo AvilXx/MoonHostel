@@ -103,7 +103,7 @@
                                                             <th>Số Điện Thoại</th> 
                                                             <th>Email</th>                                     
                                                             <th>Ngày Thuê</th>
-                                                            <th>Giá</th>
+                                                            <th>Giá (VND)</th>
                                                             <th>Trạng Thái</th>
                                                             <th>Chức Năng</th>
                                                         </tr>
@@ -115,7 +115,7 @@
                                                             <th>Số Điện Thoại</th> 
                                                             <th>Email</th>                                     
                                                             <th>Ngày Thuê</th>
-                                                            <th>Giá</th>
+                                                            <th>Giá (VND)</th>
                                                             <th>Trạng Thái</th>
                                                             <th>Chức Năng</th>
                                                         </tr>
@@ -131,7 +131,7 @@
                                                                                 <c:forEach items="${CusList}" var="Cus">
                                                                                     <c:if test="${Cus.customerID == Contract.customerID}">
                                                                                         <td>
-                                                                                            <a href="${pageContext.request.contextPath}/MainController?action=CusInfor&CusID=${Cus.customerID}">
+                                                                                            <a href="${pageContext.request.contextPath}/MainController?action=CustomerInfo&CusID=${Cus.customerID}">
                                                                                                 ${Cus.fullname}
                                                                                             </a>
                                                                                         </td>
@@ -142,7 +142,10 @@
                                                                                 </c:forEach>
                                                                             </c:when>
                                                                             <c:otherwise>
-
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                                <td></td>
                                                                             </c:otherwise>
                                                                         </c:choose>
                                                                     </c:forEach>
@@ -160,20 +163,20 @@
                                                                         <c:when test="${R.status == 'RENTING'}">
                                                                             <td>                                                    
 
-                                                                                <a href="${pageContext.request.contextPath}/MainController?action=UpdateRoom&RoomID=${R.roomID}}">
+                                                                                <a href="${pageContext.request.contextPath}/MainController?action=UpdateRoom&RoomID=${R.roomID}">
                                                                                     <button class="btn btn-primary" title="Edit"><i class="fa fa-edit"></i></button>
                                                                                 </a>
-                                                                                <a href="${pageContext.request.contextPath}/MainController?action=DeleteRoom&RoomID=${R.roomID}}">                                                                                        
+                                                                                <a href="${pageContext.request.contextPath}/MainController?action=DeleteRoom&RoomID=${R.roomID}">                                                                                        
                                                                                     <button class="btn btn-danger" title="Remove"><i class="fa fa-remove"></i></button>                
                                                                                 </a>
                                                                             </td>
                                                                         </c:when>                                                                   
                                                                         <c:otherwise>
                                                                             <td>                                                    
-                                                                                <a href="AddNewCustomer.jsp">
+                                                                                <a href="${pageContext.request.contextPath}/MainController?action=AddCustomer&RoomID=${R.roomID}">
                                                                                     <button class="btn btn-warning" title="View"><i class="fa fa-add"></i> Thêm Khách</button>
                                                                                 </a>  
-                                                                                <a href="${pageContext.request.contextPath}/MainController?action=DeleteRoom&RoomID=${R.roomID}}">                                                                                        
+                                                                                <a href="${pageContext.request.contextPath}/MainController?action=DeleteRoom&RoomID=${R.roomID}">                                                                                        
                                                                                     <button class="btn btn-danger" title="Remove"><i class="fa fa-remove"></i></button>                
                                                                                 </a>
                                                                             </td>

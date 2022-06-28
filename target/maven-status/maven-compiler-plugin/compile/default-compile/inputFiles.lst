@@ -1,5 +1,6 @@
 D:\j2yD9gmz\Majors 5\SWP391\Git\GitManager\MoonHostel\src\main\java\controller\RoomPageController.java
 D:\j2yD9gmz\Majors 5\SWP391\Git\GitManager\MoonHostel\src\main\java\dao\ContractDAO.java
+D:\j2yD9gmz\Majors 5\SWP391\Git\GitManager\MoonHostel\src\main\java\controller\DeleteServiceController.java
 D:\j2yD9gmz\Majors 5\SWP391\Git\GitManager\MoonHostel\src\main\java\dto\UserDTO.java
 D:\j2yD9gmz\Majors 5\SWP391\Git\GitManager\MoonHostel\src\main\java\controller\DeleteRoomController.java
 D:\j2yD9gmz\Majors 5\SWP391\Git\GitManager\MoonHostel\src\main\java\controller\AddCustomerController.java
@@ -23,6 +24,7 @@ D:\j2yD9gmz\Majors 5\SWP391\Git\GitManager\MoonHostel\src\main\java\controller\M
 D:\j2yD9gmz\Majors 5\SWP391\Git\GitManager\MoonHostel\src\main\java\dto\ContractDTO.java
 D:\j2yD9gmz\Majors 5\SWP391\Git\GitManager\MoonHostel\src\main\java\controller\UserPageController.java
 D:\j2yD9gmz\Majors 5\SWP391\Git\GitManager\MoonHostel\src\main\java\controller\ServicePageController.java
+D:\j2yD9gmz\Majors 5\SWP391\Git\GitManager\MoonHostel\src\main\java\controller\UpdateServiceController.java
 D:\j2yD9gmz\Majors 5\SWP391\Git\GitManager\MoonHostel\src\main\java\dto\ServiceDetailDTO.java
 D:\j2yD9gmz\Majors 5\SWP391\Git\GitManager\MoonHostel\src\main\java\dto\CustomerDTO.java
 D:\j2yD9gmz\Majors 5\SWP391\Git\GitManager\MoonHostel\src\main\java\utils\DBUtils.java

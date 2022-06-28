@@ -31,6 +31,7 @@ public class MainController extends HttpServlet {
     private static final String ADD_ROOM = "AddRoomController";
     private static final String ADD_HOSTEL = "AddHostelController";
     private static final String ADD_SERVICE = "AddServiceController";
+    private static final String ADD_CUSTOMER = "AddCustomerController";
 
     private static final String UPDATE_ROOM = "UpdateRoomController";
     private static final String UPDATE_HOSTEL = "UpdateHostelController";
@@ -57,6 +58,7 @@ public class MainController extends HttpServlet {
                 case "Logout":
                     url = LOGOUT_CONTROLLER;
                     break;
+//--PAGE------------------------------------------------------------------------------
                 case "AdminPage":
                     url = ADMIN_PAGE;
                     break;
@@ -69,6 +71,7 @@ public class MainController extends HttpServlet {
                 case "ServicePage":
                     url = SERVICE_PAGE;
                     break;
+//--ADD------------------------------------------------------------------------------
                 case "AddRoom":
                     url = ADD_ROOM;
                     break;
@@ -78,6 +81,10 @@ public class MainController extends HttpServlet {
                 case "AddService":
                     url = ADD_SERVICE;
                     break;
+                case "AddCustomer":
+                    url = ADD_CUSTOMER;
+                    break;
+//--UPDATE------------------------------------------------------------------------------
                 case "UpdateRoom":
                     url = UPDATE_ROOM;
                     break;
@@ -87,6 +94,7 @@ public class MainController extends HttpServlet {
                 case "UpdateService":
                     url = UPDATE_SERVICE;
                     break;
+//--DELETE------------------------------------------------------------------------------
                 case "DeleteRoom":
                     url = DELETE_ROOM;
                     break;
@@ -96,7 +104,7 @@ public class MainController extends HttpServlet {
                 case "DeleteService":
                     url = DELETE_SERVICE;
                     break;
-
+//--DEFAULT------------------------------------------------------------------------------
                 default:
                     break;
             }

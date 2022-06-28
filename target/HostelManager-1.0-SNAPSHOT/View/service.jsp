@@ -84,7 +84,7 @@
                                                 </c:if>                                                
                                             </c:forEach>
 
-                                            <td><input type="text" name="" value="${SD.unit_price}" disabled="disable" style="width: 100%"/></td>                                     
+                                            <td><input type="text" name="" class="money form-control" value="${SD.unit_price}" disabled="disable" style="width: 100%"/></td>                                     
                                             <td>${SD.calUnit}</td>
 
                                             <c:choose>
@@ -97,7 +97,7 @@
                                             </c:choose>
 
                                             <td>
-                                                <a href="${pageContext.request.contextPath}/MainController?action=EditService&detailID=${SD.detailID}">
+                                                <a href="${pageContext.request.contextPath}/MainController?action=UpdateService&detailID=${SD.detailID}">
                                                     <button class="btn btn-primary"><i class="fa fa-edit"></i></button>
                                                 </a>
                                                 <a href="${pageContext.request.contextPath}/MainController?action=DeleteService&detailID=${SD.detailID}">
@@ -122,7 +122,12 @@
                 </div>
             </footer>
         </div>
-    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/js/simple.money.format.js"></script>
+        <script type="text/javascript">
+            $('.money').simpleMoneyFormat();
+        </script>
     <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
     <script src="${pageContext.request.contextPath}/js/datatables-simple-demo.js"></script>
     <script src="${pageContext.request.contextPath}/assets/demo/chart-area-demo.js"></script>

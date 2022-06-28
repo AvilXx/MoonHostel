@@ -1,4 +1,4 @@
-<%-- 
+ n bd <%-- 
     Document   : addnewrom
     Created on : May 31, 2022, 7:17:06 AM
     Author     : Dell
@@ -35,7 +35,7 @@
                             <h1 class="text-info">Thêm Dịch Vụ</h1>
                         </div>
                         <div class="card-body">
-                            <form action="${pageContext.request.contextPath}/MainController?action=AddService" method="POST">
+                            <form action="${pageContext.request.contextPath}/MainController" method="POST">
                                 <div class="row">
                                     <div class="form-group row col-md-6 mt-2">
                                         <label  class="col-sm-4 col-form-label">Tên dịch vụ:</label>
@@ -79,7 +79,7 @@
                                     <div class="form-group row col-md-6 mt-2">
                                         <label  class="col-sm-4 col-form-label">Giá:</label>
                                         <div class="col col-sm-8">
-                                            <input type="number" name="unit_price" class="form-control" placeholder="Giá" required pattern="[0-9]">
+                                            <input class="money form-control" type="text" name="unit_price"  placeholder="Giá">
                                         </div>
                                     </div>
                                     <div class="form-group row col-md-6 mt-2">
@@ -98,7 +98,7 @@
                                     <a href="${pageContext.request.contextPath}/MainController?action=ServicePage">
                                         <button class="btn btn-warning" type="button" id="cancelButton"><i class="fa fa-mail-reply"></i> Trở Về</button>
                                     </a>
-                                    <button class="btn btn-success" type="submit" name="action" id="sumbitButton" value="AddService"><i class="fa fa-check"></i> Lưu</button>
+                                        <button class="btn btn-success" type="submit" name="action" id="sumbitButton" value="AddService"><i class="fa fa-check"></i> Lưu</button>
                                 </div>
                             </form>
                         </div>
@@ -115,6 +115,11 @@
             </footer>
         </div>
     </div>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/js/simple.money.format.js"></script>
+        <script type="text/javascript">
+            $('.money').simpleMoneyFormat();
+        </script>
     <script src="${pageContext.request.contextPath}/js/scripts.js"></script>
     <script src="${pageContext.request.contextPath}/js/datatables-simple-demo.js"></script>
     <script src="${pageContext.request.contextPath}/assets/demo/chart-area-demo.js"></script>

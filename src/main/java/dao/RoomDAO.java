@@ -25,17 +25,17 @@ public class RoomDAO {
     private static final String GETHOSTEL = "SELECT * FROM dbo.Hostel where user_id = ? AND status Not IN ('DISABLED')";
     private static final String GETROOM = "SELECT * FROM dbo.[Room] where hostel_id = ? AND status Not IN ('DISABLED')";
 
-    private static final String GETAHOSTEL = "SELECT * FROM dbo.[Hostel] where hostel_id = ? AND status Not IN ('DISABLED')";
-    private static final String GETAROOM = "SELECT * FROM dbo.[Room] where room_id = ? AND status Not IN ('DISABLED')";
+    private static final String GETAHOSTEL = "SELECT * FROM dbo.[Hostel] where hostel_id = ?";
+    private static final String GETAROOM = "SELECT * FROM dbo.[Room] where room_id = ?";
 
     private static final String ADDROOM = "INSERT INTO dbo.[Room](hostel_id, room_number, price, description, status) VALUES(?,?,?,?,?)";
     private static final String ADDHOSTEL = "INSERT INTO dbo.[Hostel](hostel_name, address, phone,status, user_id) VALUES(?,?,?,'ACTIVE',?)";
 
-    private static final String UPDATEROOM = "UPDATE FROM dbo.[Room] SET hostel_id = ?, room_number = ?, price = ?, description = ?, status = ? where room_id = ?";
-    private static final String UPDATEHOSTEL = "UPDATE FROM dbo.[Hostel] SET hostel_name = ?, address = ?, phone = ? where hostel_id =?"; 
+    private static final String UPDATEROOM = "UPDATE dbo.[Room] SET hostel_id = ?, room_number = ?, price = ?, description = ?, status = ? where room_id = ?";
+    private static final String UPDATEHOSTEL = "UPDATE dbo.[Hostel] SET hostel_name = ?, address = ?, phone = ? where hostel_id =?"; 
 
-    private static final String DELETEROOM = "UPDATE FROM dbo.[Room] SET status ='DISABLED' WHERE room_id = ?";
-    private static final String DELETEHOSTEL = "UPDATE FROM dbo.[Hostel] SET status ='DISABLED' WHERE hostel_id = ?";
+    private static final String DELETEROOM = "UPDATE dbo.[Room] SET status ='DISABLED' WHERE room_id = ?";
+    private static final String DELETEHOSTEL = "UPDATE dbo.[Hostel] SET status ='DISABLED' WHERE hostel_id = ?";
 
     private static final String COUNT_HOSTEL = "SELECT COUNT(hostel_id) + 1 FROM dbo.[Hostel]";
     private static final String COUNT_ROOM = "SELECT COUNT(room_id) + 1 FROM dbo.[Room]";
@@ -150,7 +150,6 @@ public class RoomDAO {
     }
 
     public RoomDTO GetARoom(String RoomID) throws SQLException {
-        List<RoomDTO> list = new ArrayList<>();
             Connection conn = null;
             PreparedStatement ptm = null;
             ResultSet rs = null;
@@ -166,7 +165,7 @@ public class RoomDAO {
                         Double price = rs.getDouble("price");
                         String description = rs.getString("description");
                         String status = rs.getString("status");
-                        list.add(new RoomDTO(RoomID,HostelID,roomNumber,price,description,status));
+                        return new RoomDTO(RoomID,HostelID,roomNumber,price,description,status);
                     }
                 }
             } catch (Exception e) {
@@ -374,6 +373,7 @@ public class RoomDAO {
 
 
     public static void main(String[] args) throws SQLException {
+    try{
         List<CustomerDTO> Cus = new ArrayList<>();
         List <ContractDTO> Contract = new ArrayList<>();
         List<RoomDTO> room = new ArrayList<>();
@@ -381,17 +381,23 @@ public class RoomDAO {
         CustomerDAO Cusdao = new CustomerDAO();
         ContractDAO Contractdao = new ContractDAO();
 
-        List<HostelDTO> list = dao.GetListHostel("1");
-        room = dao.GetListRoom(list);
-        Contract = Contractdao.GetListContract(room);
-        Cus = Cusdao.GetListCustomer(Contract);
+        RoomDTO d = dao.GetARoom("1");
+        HostelDTO h = dao.GetAHostel(d.getHostelID());
 
-        for(ContractDTO w : Contract){
-            System.out.println(w.getContractID());
-        }
-        for(CustomerDTO w : Cus){
-            System.out.println(w.getFullname());
-        }
+        System.out.println(d.getRoomnumber());
+        System.out.println(h.getHostelname());
+    }catch(Exception ex){}
+//        List<HostelDTO> list = dao.GetListHostel("1");
+//        room = dao.GetListRoom(list);
+//        Contract = Contractdao.GetListContract(room);
+//        Cus = Cusdao.GetListCustomer(Contract);
+//
+//        for(ContractDTO w : Contract){
+//            System.out.println(w.getContractID());
+//        }
+//        for(CustomerDTO w : Cus){
+//            System.out.println(w.getFullname());
+//        }
 //        ProductSize list = dao.getProductAllSize("1");
 ////        for(Product o :list){
 //            System.out.println(list);

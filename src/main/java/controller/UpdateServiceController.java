@@ -4,13 +4,11 @@
  */
 package controller;
 
-import dao.ContractDAO;
-import dao.CustomerDAO;
 import dao.RoomDAO;
-import dto.ContractDTO;
-import dto.CustomerDTO;
+import dao.ServiceDAO;
 import dto.HostelDTO;
-import dto.RoomDTO;
+import dto.ServiceDetailDTO;
+import dto.ServiceTypeDTO;
 import dto.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,39 +24,15 @@ import javax.servlet.http.HttpSession;
  *
  * @author avillX
  */
-@WebServlet(name = "RoomPageController", urlPatterns = {"/RoomPageController"})
-public class RoomPageController extends HttpServlet {
+@WebServlet(name = "UpdateServiceController", urlPatterns = {"/UpdateServiceController"})
+public class UpdateServiceController extends HttpServlet {
 
-    private static final String SUCCESS = "View/room.jsp";
-   
+    private static final String ERROR = "View/editService.jsp";
+    private static final String SUCCESS = "MainController?action=ServicePage";   
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = SUCCESS;
-        try {
-            HttpSession ss = request.getSession();
-            UserDTO us =  (UserDTO) ss.getAttribute("LOGIN_USER");
-            RoomDAO dao = new RoomDAO();
-            CustomerDAO Cusdao = new CustomerDAO();
-            ContractDAO Cdao = new ContractDAO();
-
-            List<HostelDTO> HostelList = dao.GetListHostel(us.getUserID());
-            List<RoomDTO> RoomList = dao.GetListRoom(HostelList);
-            List<ContractDTO> ContractList = Cdao.GetListContract(RoomList);
-            List<CustomerDTO> CusList = Cusdao.GetListCustomer(ContractList);
-       
-
-            request.setAttribute("HostelList",HostelList);
-            request.setAttribute("RoomList",RoomList);
-            request.setAttribute("ContractList",ContractList);
-            request.setAttribute("CusList",CusList);
-          
-
-        } catch (Exception e) {
-            log("Error at RoomPageController:"+e.toString());
-        } finally {
-            request.getRequestDispatcher(url).forward(request, response);
-        }
 
     }
 
@@ -74,7 +48,29 @@ public class RoomPageController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        String url = ERROR;
+        try {
+            HttpSession ss = request.getSession();
+            UserDTO us =  (UserDTO) ss.getAttribute("LOGIN_USER");
+            RoomDAO dao = new RoomDAO();
+            ServiceDAO SerDAO = new ServiceDAO();
+
+            List<HostelDTO> HostelList = dao.GetListHostel(us.getUserID());
+            List<ServiceTypeDTO> ServiceList = SerDAO.GetListService();
+            ServiceDetailDTO SD = SerDAO.GetAServiceDetail(request.getParameter("detailID"));
+
+
+            request.setAttribute("ServiceTypeList",ServiceList);
+            request.setAttribute("ServiceDetail",SD);
+            request.setAttribute("HostelList",HostelList);
+
+
+        } catch (Exception e) {
+            log("Error at ServicePageController:"+e.toString());
+        } finally {
+            request.getRequestDispatcher(url).forward(request, response);
+        }
     }
 
     /**

@@ -4,63 +4,44 @@
  */
 package controller;
 
-import dao.ContractDAO;
-import dao.CustomerDAO;
 import dao.RoomDAO;
-import dto.ContractDTO;
-import dto.CustomerDTO;
-import dto.HostelDTO;
-import dto.RoomDTO;
-import dto.UserDTO;
+import dao.ServiceDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author avillX
  */
-@WebServlet(name = "RoomPageController", urlPatterns = {"/RoomPageController"})
-public class RoomPageController extends HttpServlet {
+@WebServlet(name = "DeleteServiceController", urlPatterns = {"/DeleteServiceController"})
+public class DeleteServiceController extends HttpServlet {
 
-    private static final String SUCCESS = "View/room.jsp";
-   
+    private static final String ERROR = "ServicePageController"; 
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = SUCCESS;
+        String url = ERROR;
         try {
-            HttpSession ss = request.getSession();
-            UserDTO us =  (UserDTO) ss.getAttribute("LOGIN_USER");
-            RoomDAO dao = new RoomDAO();
-            CustomerDAO Cusdao = new CustomerDAO();
-            ContractDAO Cdao = new ContractDAO();
-
-            List<HostelDTO> HostelList = dao.GetListHostel(us.getUserID());
-            List<RoomDTO> RoomList = dao.GetListRoom(HostelList);
-            List<ContractDTO> ContractList = Cdao.GetListContract(RoomList);
-            List<CustomerDTO> CusList = Cusdao.GetListCustomer(ContractList);
-       
-
-            request.setAttribute("HostelList",HostelList);
-            request.setAttribute("RoomList",RoomList);
-            request.setAttribute("ContractList",ContractList);
-            request.setAttribute("CusList",CusList);
-          
-
+            String detailID = request.getParameter("detailID");
+            ServiceDAO dao = new ServiceDAO();
+            boolean check = dao.DeleteServiceDetail(detailID);
+            if (check) {
+                url = ERROR;
+            }
         } catch (Exception e) {
-            log("Error at RoomPageController:"+e.toString());
+            log("Error at DeleteRoomController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
-
     }
+
+    
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -88,7 +69,7 @@ public class RoomPageController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
     }
 
     /**
