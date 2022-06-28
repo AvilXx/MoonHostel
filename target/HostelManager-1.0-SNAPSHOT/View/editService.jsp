@@ -32,7 +32,7 @@
                 <div class="container-fluid px-4">
                     <div class="card mt-4">
                         <div class="card-header">
-                            <h1 class="text-info"><i class="fa fa-edit"></i>Chỉnh sửa Dịch Vụ</h1>
+                            <h1 class="text-info"><i class="fa fa-edit"></i> Chỉnh sửa Dịch Vụ</h1>
                         </div>
                         <div class="card-body">
                             <form action="${pageContext.request.contextPath}/MainController" method="POST">
@@ -92,9 +92,21 @@
                                     <div class="form-group row col-md-6 mt-2">
                                         <label  class="col-sm-4 col-form-label"></label>
                                         <label class="col-sm-8">
-
+                                            <c:choose>
+                                                <c:when test="${ServiceDetail.status == 'ACTIVE'}">
+                                                    <input name="status" type="checkbox" value="DISABLED" checked> Đang dùng 
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <input name="status" type="checkbox" value="ACTIVE"> Đang dùng 
+                                                </c:otherwise>
+                                            </c:choose>                                                
                                         </label>
                                     </div>
+                                    <div class="form-group">
+                                        <label for="inputAddress2">Mô Tả:</label>
+                                        <textarea rows="3" class="form-control" id="remarks" name="description"></textarea>
+                                    </div>
+
                                 </div> 
 
                                 <div class="mt-3 text-center">
