@@ -39,7 +39,7 @@
 
                         <div class="card-body">
                             <table id="datatablesSimple">
-                                <thead>
+                                <thead style="font-size: 17px">
                                     <tr>
                                         <th>Nhà</th>
                                         <th>Phòng</th>
@@ -51,7 +51,7 @@
 
                                     </tr>
                                 </thead>
-                                <tfoot>
+                                <tfoot style="font-size: 17px">
                                     <tr>
                                         <th>Nhà</th>
                                         <th>Phòng</th>

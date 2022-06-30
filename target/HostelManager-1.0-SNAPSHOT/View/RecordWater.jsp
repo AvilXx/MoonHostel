@@ -21,6 +21,7 @@
         <link href="${pageContext.request.contextPath}/css/styles.css" rel="stylesheet" />
 
     </head>
+    
     <body class="sb-nav-fixed">
 
         <%@include file="/View/layout/header.jsp" %>
@@ -35,9 +36,9 @@
 
                         <div class="card-body">
                             <table id="datatablesSimple">
-                                <thead>
-                                    <tr>
-                                        <th>Nhà</th>
+                                <thead style="font-size: 17px">
+                                    <tr >
+                                        <th >Nhà</th>
                                         <th>Phòng</th>
                                         <th>Khách Thuê</th> 
                                         <th>Chỉ Số Nước Cũ</th>
@@ -46,7 +47,7 @@
                                         <th></th>
                                     </tr>
                                 </thead>
-                                <tfoot>
+                                <tfoot style="font-size: 17px">
                                     <tr>
                                          <th>Nhà</th>
                                         <th>Phòng</th>
