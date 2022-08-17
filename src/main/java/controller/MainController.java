@@ -28,6 +28,8 @@ public class MainController extends HttpServlet {
     private static final String CUSTOMER_PAGE = "CustomerPageController";
     private static final String ROOM_PAGE = "RoomPageController";
     private static final String SERVICE_PAGE = "ServicePageController";
+    private static final String BILL_PAGE = "BillPageController";
+    private static final String CART_PAGE = "CartController";
 
     private static final String ADD_ROOM = "AddRoomController";
     private static final String ADD_HOSTEL = "AddHostelController";
@@ -37,15 +39,16 @@ public class MainController extends HttpServlet {
     private static final String UPDATE_ROOM = "UpdateRoomController";
     private static final String UPDATE_HOSTEL = "UpdateHostelController";
     private static final String UPDATE_SERVICE = "UpdateServiceController";
+    private static final String UPDATE_BILL = "UpdateBillController";
 
     private static final String DELETE_ROOM = "DeleteRoomController";
     private static final String DELETE_HOSTEL = "DeleteHostelController";
     private static final String DELETE_SERVICE = "DeleteServiceController";
 
+    private static final String CHANGE_PASS = "ChangePassController";
+    private static final String CHECKOUT = "CheckoutController";
+    private static final String COMPLETEBILL = "CompleteBillController";
 
-
-
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -75,6 +78,12 @@ public class MainController extends HttpServlet {
                 case "ServicePage":
                     url = SERVICE_PAGE;
                     break;
+                case "BillPage":
+                    url = BILL_PAGE;
+                    break;
+                case "CartPage":
+                    url = CART_PAGE;
+                    break;
 //--ADD------------------------------------------------------------------------------
                 case "AddRoom":
                     url = ADD_ROOM;
@@ -97,6 +106,18 @@ public class MainController extends HttpServlet {
                     break;
                 case "UpdateService":
                     url = UPDATE_SERVICE;
+                    break;
+                case "UpdateBill":
+                    url = UPDATE_BILL;
+                    break;
+                case "ChangePass":
+                    url = CHANGE_PASS;
+                    break;
+                case "Checkout":
+                    url = CHECKOUT;
+                    break;
+                case "CompleteBill":
+                    url = COMPLETEBILL;
                     break;
 //--DELETE------------------------------------------------------------------------------
                 case "DeleteRoom":

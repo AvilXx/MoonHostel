@@ -13,6 +13,8 @@ import dto.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,7 +31,7 @@ import javax.servlet.http.HttpSession;
 public class UpdateServiceController extends HttpServlet {
 
     private static final String ERROR = "View/editService.jsp";
-    private static final String SUCCESS = "MainController?action=ServicePage";   
+    private static final String SUCCESS = "MainController?action=ServicePage";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -53,22 +55,27 @@ public class UpdateServiceController extends HttpServlet {
         String url = ERROR;
         try {
             HttpSession ss = request.getSession();
-            UserDTO us =  (UserDTO) ss.getAttribute("LOGIN_USER");
+            UserDTO us = (UserDTO) ss.getAttribute("LOGIN_USER");
             RoomDAO dao = new RoomDAO();
             ServiceDAO SerDAO = new ServiceDAO();
 
             List<HostelDTO> HostelList = dao.GetListHostel(us.getUserID());
             List<ServiceTypeDTO> ServiceList = SerDAO.GetListService();
-            ServiceDetailDTO SD = SerDAO.GetAServiceDetail(request.getParameter("detailID"));
+            ServiceDetailDTO SD = SerDAO.GetAServiceDetail(Integer.valueOf(request.getParameter("detailID")));
 
+            request.setAttribute("ServiceTypeList", ServiceList);
+            request.setAttribute("ServiceDetail", SD);
+            request.setAttribute("HostelList", HostelList);
 
-            request.setAttribute("ServiceTypeList",ServiceList);
-            request.setAttribute("ServiceDetail",SD);
-            request.setAttribute("HostelList",HostelList);
-
+            String style = request.getParameter("style");
+            if (style.equals("remove")) {
+                SD.setStatus("DELETE");
+                SerDAO.UpdateServiceDetail(SD);
+                url = SUCCESS;
+            }
 
         } catch (Exception e) {
-            log("Error at ServicePageController:"+e.toString());
+            log("Error at ServicePageController:" + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
@@ -89,22 +96,48 @@ public class UpdateServiceController extends HttpServlet {
         String url = SUCCESS;
         try {
             HttpSession ss = request.getSession();
-            UserDTO us =  (UserDTO) ss.getAttribute("LOGIN_USER");
+            UserDTO us = (UserDTO) ss.getAttribute("LOGIN_USER");
             ServiceDAO dao = new ServiceDAO();
-            String detail_id = request.getParameter("detail_id");
+
+            int detail_id = Integer.valueOf(request.getParameter("detail_id"));
             String detail_name = request.getParameter("detail_name");
+
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDateTime now = LocalDateTime.now();
+            String currentDate = dtf.format(now);
 
             Double unitprice = Double.parseDouble(request.getParameter("unit_price"));
             String updated_date = request.getParameter("updated_date");
-            String status = request.getParameter("status");
             String description = request.getParameter("description");
-            
-            boolean check = dao.UpdateServiceDetail(new ServiceDetailDTO(detail_id,detail_name,"",unitprice,Date.valueOf(updated_date),description,status,"",""));
-            if (check) {
+            String service_id = request.getParameter("service_id");
+            String status = request.getParameter("status");
+            if (status == null) {
+                status = "DISABLED";
+            }
+            boolean update = false;
+            ServiceDetailDTO checkChange = dao.GetAServiceDetail(detail_id);
+            if (checkChange.getUnit_price() != unitprice) {
+                checkChange.setStatus(status);
+                update = dao.UpdateServiceDetail(checkChange);
+                checkChange.setUnit_price(unitprice);
+                boolean check = dao.AddServiceDetail(checkChange);
+
+            } else {
+                checkChange.setStatus(status);
+                checkChange.setServiceID(Integer.parseInt(service_id));
+                checkChange.setDetailname(detail_name);
+                checkChange.setUpdated_date(Date.valueOf(currentDate));
+                checkChange.setDescription(description);
+                checkChange.setStatus(status);
+                checkChange.setStatus("ACTIVE");
+                update = dao.UpdateServiceDetail(checkChange);
+            }
+
+            if (update) {
                 url = SUCCESS;
             }
         } catch (Exception e) {
-            log("Error at AddServiceController(doPost): " + e.toString());
+            log("Error at UpdateServiceController(doPost): " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

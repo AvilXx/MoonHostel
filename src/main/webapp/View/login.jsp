@@ -45,7 +45,7 @@
                 <form action="${pageContext.request.contextPath}/MainController" method="POST">
                     <div class="form-row">
                         <label for="">Emai</label>
-                        <input type="text" placeholder="yourname@gmail.com" class="form-control form-control-sm" name="email" required pattern="\S+" >
+                        <input type="text" placeholder="Email hoặc số điện thoại" class="form-control form-control-sm" name="email" required pattern="\S+" >
                     </div>
 
                     <div class="form-row">
@@ -54,12 +54,12 @@
                     </div>
 
                     <div class="form-row row skjh">
-                        <div class="col-7 left no-padding">
+<!--                        <div class="col-7 left no-padding">
                             <input type="checkbox">Nhớ Mật Khẩu
                         </div>
                         <div class="col-5">
                             <span> <a href="">Quên Mật Khẩu ?</a></span>
-                        </div>
+                        </div>-->
                         <p class="help-block alert-danger">${requestScope.ERROR}</p>
 
                     </div>
@@ -69,18 +69,6 @@
                         <input type="submit" class="btn btn"  name="action" value="Login">
                     </div>
                 </form>
-
-                <div class="ord-v">
-                    <a href="or login with"></a>
-                </div>
-
-                <div class="soc-det">
-                    <ul>
-                        <li class="facebook"><a href="https://www.facebook.com"><i class="fa fa-facebook"></i></a></li>
-                        <li class="twitter"><a href="https://twitter.com/"><i class="fa fa-twitter"></i></a></li>
-                        <li class="link"><a href="https://www.linkedin.com/"><i class="fa fa-linkedin"></i></a></li>
-                    </ul>
-                </div>
 
 
 

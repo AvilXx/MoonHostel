@@ -23,7 +23,7 @@ import utils.DBUtils;
  */
 public class RoomDAO {
     private static final String GETHOSTEL = "SELECT * FROM dbo.Hostel where user_id = ? AND status Not IN ('DISABLED')";
-    private static final String GETROOM = "SELECT * FROM dbo.[Room] where hostel_id = ? AND status Not IN ('DISABLED')";
+    private static final String GETROOM = "SELECT * FROM dbo.[Room] where hostel_id = ? AND status Not IN ('DISABLED') ORDER BY room_number";
 
     private static final String GETAHOSTEL = "SELECT * FROM dbo.[Hostel] where hostel_id = ?";
     private static final String GETAROOM = "SELECT * FROM dbo.[Room] where room_id = ?";
@@ -271,10 +271,8 @@ public class RoomDAO {
                 ptm.setString(1, Hostel.getHostelname());
                 ptm.setString(2, Hostel.getAddress());
                 ptm.setString(3, Hostel.getPhone());
-                ptm.setString(4, Hostel.getPhone());
-                ptm.setString(5, Hostel.getHostelID());
-                ptm.setString(6, Hostel.getWardID());
-                ptm.setString(7, Hostel.getWardID());
+                ptm.setString(4, Hostel.getHostelID());
+                ptm.setString(5, Hostel.getWardID());
                 check = ptm.executeUpdate() > 0 ? true : false;
             }
         } catch (Exception e) {

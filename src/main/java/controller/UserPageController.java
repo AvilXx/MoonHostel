@@ -4,8 +4,12 @@
  */
 package controller;
 
+import dao.BillDAO;
+import dao.ContractDAO;
 import dao.CustomerDAO;
 import dao.RoomDAO;
+import dto.BillDTO;
+import dto.ContractDTO;
 import dto.CustomerDTO;
 import dto.HostelDTO;
 import dto.RoomDTO;
@@ -29,25 +33,36 @@ public class UserPageController extends HttpServlet {
 
     private static final String SUCCESS = "View/index.jsp";
     private static final String ERROR = "View/index.jsp";
-   
-     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
             HttpSession ss = request.getSession();
-            UserDTO us =  (UserDTO) ss.getAttribute("LOGIN_USER");
+            UserDTO us = (UserDTO) ss.getAttribute("LOGIN_USER");
             RoomDAO dao = new RoomDAO();
+            CustomerDAO Cusdao = new CustomerDAO();
+            ContractDAO Cdao = new ContractDAO();
+            BillDAO Bdao = new BillDAO();
 
             List<HostelDTO> HostelList = dao.GetListHostel(us.getUserID());
             List<RoomDTO> RoomList = dao.GetListRoom(HostelList);
-            
-            request.setAttribute("HostelList",HostelList);
-            request.setAttribute("RoomList",RoomList);
+            List<ContractDTO> ContractList = Cdao.GetListContract(RoomList);
+            List<CustomerDTO> CusList = Cusdao.GetListCustomer(ContractList);
+            List<BillDTO> BillList = Bdao.GetListBill(CusList);
+            List<BillDTO> BillList_PROCESS = Bdao.GetListBill_CHECKOUT(CusList);
+
+            request.setAttribute("HostelList", HostelList);
+            request.setAttribute("RoomList", RoomList);
+            request.setAttribute("ContractList", ContractList);
+            request.setAttribute("CusList", CusList);
+            request.setAttribute("BillList", BillList);
+            request.setAttribute("CheckoutList", BillList_PROCESS);
             url = SUCCESS;
 
         } catch (Exception e) {
-            log("Error at UserPageController:"+e.toString());
+            log("Error at UserPageController:" + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

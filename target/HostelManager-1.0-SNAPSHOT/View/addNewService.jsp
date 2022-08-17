@@ -1,20 +1,18 @@
-n bd <%-- 
-   Document   : addnewrom
-   Created on : May 31, 2022, 7:17:06 AM
-   Author     : Dell
+<%-- 
+  Document   : addnewrom
+  Created on : May 31, 2022, 7:17:06 AM
+  Author     : Dell
 --%>
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
         <title>MoonHostel</title>
         <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/assets/img/logo.png" sizes="16x16">
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
@@ -32,7 +30,7 @@ n bd <%--
                 <div class="container-fluid px-4">
                     <div class="card mt-4">
                         <div class="card-header">
-                            <h1 class="text-info"><i class="fab fa-servicestack"></i> Thêm Dịch Vụ</h1>
+                            <h1 class="text-info"><i class="fab fa-servicestack fa-beat"></i> Thêm Dịch Vụ</h1>
                         </div>
                         <div class="card-body">
                             <form action="${pageContext.request.contextPath}/MainController" method="POST">
@@ -40,7 +38,7 @@ n bd <%--
                                     <div class="form-group row col-md-6 mt-2">
                                         <label  class="col-sm-4 col-form-label">Tên dịch vụ:</label>
                                         <div class="col col-sm-8">
-                                            <input name="detail_name" type="text" class="form-control" placeholder="Tên dịch vụ" required pattern="\S+">
+                                            <input name="detail_name" type="text" class="form-control" placeholder="Tên dịch vụ">
                                         </div>
                                     </div>
                                     <div class="form-group row col-md-6 mt-2">
@@ -59,7 +57,7 @@ n bd <%--
                                     <div class="form-group row col-md-6 mt-2">
                                         <label  class="col-sm-4 col-form-label">Ngày thêm:</label>
                                         <div class="col col-sm-8">
-                                            <input type="date" name="updated_date"class="form-control">
+                                            <input type="date" name="updated_date" class="form-control" value="${CurrentDate}">
                                         </div>
                                     </div>
                                     <div class="form-group row col-md-6 mt-2">
@@ -67,9 +65,17 @@ n bd <%--
                                         <div class="col-sm-8">
                                             <select id="#" name="hostel_id" style="padding:6px 0; border-radius: 3px; width: 50%" >
                                                 <c:forEach items="${HostelList}" var="H">
-                                                    <option value="${H.hostelID}">${H.hostelname}</option>                                                
+                                                    <c:choose>
+                                                        <c:when test="${H.hostelID == CurrentHostel.hostelID}">
+                                                            <option value="${H.hostelID}" selected>${H.hostelname}</option> 
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <option value="${H.hostelID}">${H.hostelname}</option> 
+                                                        </c:otherwise>
+                                                    </c:choose>
+
                                                 </c:forEach>
-                                            </select> 
+                                            </select>
 
                                         </div>
                                     </div>
@@ -79,7 +85,7 @@ n bd <%--
                                     <div class="form-group row col-md-6 mt-2">
                                         <label  class="col-sm-4 col-form-label">Giá:</label>
                                         <div class="col col-sm-8">
-                                            <input class="money form-control" type="text" name="unit_price"  placeholder="Giá">
+                                            <input class="form-control" type="text" name="unit_price"  placeholder="Giá">
                                         </div>
                                     </div>
                                     <div class="form-group row col-md-6 mt-2">
@@ -91,7 +97,7 @@ n bd <%--
                                 </div> 
                                 <div class="form-group">
                                     <label for="inputAddress2">Mô Tả:</label>
-                                    <textarea rows="3" class="form-control" id="remarks" name="description"></textarea>
+                                    <textarea rows="3" class="form-control" id="remarks" name="description">${ServiceDetail.description}</textarea>
                                 </div>
 
                                 <div class="mt-3 text-center">

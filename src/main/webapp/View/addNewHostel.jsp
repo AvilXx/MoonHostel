@@ -1,4 +1,10 @@
 
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.Statement"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="java.sql.DriverManager"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,49 +31,63 @@
                 <div class="container-fluid px-4">
                     <div class="card mt-4">
                         <div class="card-header">
-                            <h1 class="text-info"><i class="fa-solid fa-house-chimney-medical"></i> Thêm Nhà Trọ</h1>
+                            <h1 class="text-info"><i class="fa-solid fa-house-chimney-medical fa-beat"></i> Thêm Nhà Trọ</h1>
 
                         </div>
                         <div class="card-body">
 
                             <form action="${pageContext.request.contextPath}/MainController" method="POST">
-                                <div class="form-group row">
-                                    <label  class="col-sm-2 col-form-label">Tên Nhà</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="hostelname" class="form-control" placeholder="Nhập tên nhà">
+                                <div class="row">
+                                    <div class="form-group row col-md-12 mt-2">
+                                        <label  class="col-sm-2 col-form-label">Tên nhà</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="hostelname" class="form-control" placeholder="Nhập tên nhà">
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="form-group row col-md-12 mt-2">
+                                        <label  class="col-sm-2 col-form-label">Tỉnh/Thành Phố</label>
+                                        <div class="col-sm-10">
+                                            <select id="province" style="padding:6px 0; border-radius: 3px; width: 40%" >
+                                            </select>  
+                                        </div>
+                                    </div>
+                                </div>     
 
-                                <div class="form-group row">
-                                    <label  class="col-sm-2 col-form-label">Địa Chỉ</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="address" class="form-control" placeholder="Nhập địa chỉ">
+                                <div class="row">
+                                    <div class="form-group row col-md-12 mt-2">
+                                        <label  class="col-sm-2 col-form-label">Quận/Huyện</label>
+                                        <div class="col-sm-10">
+                                            <select id="district" style="padding:6px 0; border-radius: 3px; width: 40%" >
+                                            </select>  
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label  class="col-sm-2 col-form-label">Phường</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="ward" class="form-control" placeholder="Nhập tên phường">
+                                <div class="row">
+                                    <div class="form-group row col-md-12 mt-2">
+                                        <label  class="col-sm-2 col-form-label">Phường/Xã</label>
+                                        <div class="col-sm-10">
+                                            <select id="ward" style="padding:6px 0; border-radius: 3px; width: 40%" >
+                                            </select>  
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label  class="col-sm-2 col-form-label">Quận</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="district" class="form-control" placeholder="Nhập tên quận">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label  class="col-sm-2 col-form-label">Thành Phố</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" name="city" class="form-control" placeholder="Nhập thành phố">
-                                    </div>
+                                </div> 
+
+                                <div class="row">
+                                    <div class="form-group row col-md-12 mt-2">
+                                        <label  class="col-sm-2 col-form-label">Địa chỉ cụ thể</label>
+                                        <div class="col-sm-10">
+                                            <input  type="text" name="address" class="form-control" placeholder="Nhập địa chỉ cụ thể">
+                                        </div>
+                                    </div>                                 
                                 </div>
 
                                 <div class="mt-3 text-center">
                                     <a href="${pageContext.request.contextPath}/MainController?action=RoomPage">
                                         <button class="btn btn-warning" type="button" id="cancelButton"><i class="fa fa-mail-reply"></i> Trở Về</button>
                                     </a>
-                                        <button class="btn btn-success" type="submit" name="action" id="sumbitButton" value="AddHostel"><i class="fa fa-check"></i> Lưu</button>
+                                    <button class="btn btn-success"  type="submit" name="action" id="sumbitButton" value="AddHostel"><i class="fa fa-check"></i> Lưu</button>
                                 </div>
                             </form>
 
@@ -100,6 +120,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="${pageContext.request.contextPath}/js/index.js"></script>
 </body>
 
 </html>
